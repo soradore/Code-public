@@ -5,7 +5,7 @@ require "db.php";
 <html lang="ja">
 <head>
     <meta charset="utf-8">
-
+    <meta name="viewport" content="width=device-width,initial-scale=1">
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.0/ace.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.0/ext-language_tools.js"></script>
@@ -85,7 +85,6 @@ $code = $data["code"];
             switch(res){
                 case 'success':
                     alert("削除しました");
-                    //location.replace("http://code.pocketmp.xyz");
                     break;
                 case 'pass_faild':
                     alert("パスワードが正しくありません");
@@ -98,7 +97,6 @@ $code = $data["code"];
         });
 
     });
-    -->
  </script>
 </body>
 <?php else : ?>

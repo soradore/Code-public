@@ -12,8 +12,8 @@ class DB{
     public function __construct(){
         
         if(!file_exists("./dataFolder/my_data.db")){
-            @mkdir("./dataFolder");
-            @mkdir(self::FILE_DIR);
+            @mkdir("./dataFolder", 0705);
+            @mkdir(self::FILE_DIR, 0705);
             $pdo = new PDO("sqlite:./dataFolder/my_data.db");
             $sql = "create table codes(id integer, pass text, title text, type integer)";
             $pdo->query($sql);
@@ -33,6 +33,7 @@ class DB{
             $stmt = $pdo->prepare("INSERT INTO codes(id, pass, title, type) VALUES (?, ?, ?, ?)");
             $stmt->execute([$id, password_hash($pass, PASSWORD_DEFAULT), $title, $type]);
             @file_put_contents(self::FILE_DIR.$id.".txt", $code);
+            @chmod(self::FILE_DIR.$id.".txt", 0600);
         } catch (PDOException $e) {
             echo $e->getMessage();
             return false;
