@@ -5,13 +5,15 @@ require "db.php";
 <html lang="ja">
 <head>
     <meta charset="utf-8">
-    <link type="text/css" rel="stylesheet" href="./syntaxhighlighter/styles/shCore.css" />
-    <link type="text/css" rel="stylesheet" href="./syntaxhighlighter/styles/shThemeDefault.css" />
+    <!-- <link type="text/css" rel="stylesheet" href="./syntaxhighlighter/styles/shCore.css" />
+    <link type="text/css" rel="stylesheet" href="./syntaxhighlighter/styles/shThemeDefault.css" />-->
 
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-    <script src="./syntaxhighlighter/scripts/shCore.js"></script>
+    <!--<script src="./syntaxhighlighter/scripts/shCore.js"></script>
     <script type="text/javascript" src="./syntaxhighlighter/scripts/shBrushPhp.js"></script>
-    <script type="text/javascript" src="./syntaxhighlighter/scripts/shBrushJava.js"></script>
+    <script type="text/javascript" src="./syntaxhighlighter/scripts/shBrushJava.js"></script> -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.0/ace.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.0/ext-language_tools.js"></script>
     <style type="text/css">
       #code {
         margin: 30px 60px;
@@ -36,9 +38,21 @@ $code = $data["code"];
 </head>
 <body>
  <!-- ACE Editor -->
- <div class="brush: <?=$type?>">
-    <?php echo "<pre>" . htmlentities($code) . "</pre>";?>
- </div>
+
+ <div id="code" style="height: 500px; width: 80%"><?php echo htmlentities($code); ?></div>
+ <script type="text/javascript">
+    var editor = ace.edit("code"); 
+    editor.setOptions({
+        enableBasicAutocompletion: true,
+        enableSnippets: true,
+        enableLiveAutocompletion: true
+    });
+    editor.$blockScrolling = Infinity;
+    editor.setTheme("ace/theme/monokai");
+    editor.setFontSize(14);
+    editor.getSession().setMode("ace/mode/<?=$type?>");
+    editor.getSession().setTabSize(4);
+ </script>
 
  <input type="hidden" id="id" value="<?=$id?>">
  <input type="password" id="pass" placeholder="password">
