@@ -7,14 +7,14 @@ class DB{
     const TYPE_PHP = 12;
     const TYPE_JAVA = 13;
 
-    const FILE_DIR = "./dataFolder/files/";
+    const FILE_DIR = __FILE__ . "dataFolder/files/";
     
     public function __construct(){
         
-        if(!file_exists("./dataFolder/my_data.db")){
-            @mkdir("./dataFolder", 0705);
+        if(!file_exists(__FILE__ . "dataFolder/my_data.db")){
+            @mkdir(__FILE__ . "dataFolder", 0705);
             @mkdir(self::FILE_DIR, 0705);
-            $pdo = new PDO("sqlite:./dataFolder/my_data.db");
+            $pdo = new PDO("sqlite:" . self::getDBFullPath());
             $sql = "create table codes(id integer, pass text, title text, type integer)";
             $pdo->query($sql);
             $pdo = NULL;
@@ -27,7 +27,7 @@ class DB{
         $id = self::getHash();
         $type = $this->type2int($type);
         try {
-            $pdo = new PDO("sqlite:./dataFolder/my_data.db");
+            $pdo = new PDO("sqlite:" . self::getDBFullPath());
             $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
             $stmt = $pdo->prepare("INSERT INTO codes(id, pass, title, type) VALUES (?, ?, ?, ?)");
@@ -47,7 +47,7 @@ class DB{
         $result = false;
         if(!file_exists(self::FILE_DIR.$id.".txt")) return self::NOT_FOUND;
         try {
-            $pdo = new PDO("sqlite:./dataFolder/my_data.db");
+            $pdo = new PDO("sqlite:" . self::getDBFullPath());
             $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
             $stmt = $pdo->prepare("SELECT * FROM codes WHERE id = ?");
@@ -65,7 +65,7 @@ class DB{
         if($data = $this->getCode($id)){
             if(password_verify($pass, $data["pass"])){
                 try {
-                    $pdo = new PDO("sqlite:./dataFolder/my_data.db");
+                    $pdo = new PDO("sqlite:" . getDBFullPath());
                     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
                     $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
                     $stmt = $pdo->prepare("DELETE FROM codes WHERE id = ?");
@@ -124,6 +124,11 @@ class DB{
     public static function makePass(){
         return substr(str_shuffle(str_repeat('0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ$;/=&`][-+_{}!#@', 8)), 0, 8);
     } 
+
+
+    public static function getDBFullPath(){
+    	return __FILE__ . "dataFolder/my_data.db";
+    }
     
 }
 
