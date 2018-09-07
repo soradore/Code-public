@@ -11,10 +11,11 @@ try{
 				$id = $_POST["id"];
 				$pass = $_POST["pass"];
 				if($re = $db->removeCode($id, $pass)){
-					exit("success");
-				}elseif($re == DB::PASS_IS_FAILD){
-					exit("pass_faild");
-				}
+					if($re == DB::PASS_IS_FAILD){
+						exit("pass_faild");
+					}else{
+						exit("success");
+					}
 			}
 			break;
 			case 'save':

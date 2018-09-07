@@ -7,12 +7,12 @@ class DB{
     const TYPE_PHP = 12;
     const TYPE_JAVA = 13;
 
-    const FILE_DIR = __FILE__ . "dataFolder/files/";
+    const FILE_DIR = "./dataFolder/files/";
     
     public function __construct(){
         
-        if(!file_exists(__FILE__ . "dataFolder/my_data.db")){
-            @mkdir(__FILE__ . "dataFolder", 0705);
+        if(!file_exists(__DIR__ . "dataFolder/my_data.db")){
+            @mkdir("./dataFolder", 0705);
             @mkdir(self::FILE_DIR, 0705);
             $pdo = new PDO("sqlite:" . self::getDBFullPath());
             $sql = "create table codes(id integer, pass text, title text, type integer)";
@@ -127,7 +127,7 @@ class DB{
 
 
     public static function getDBFullPath(){
-    	return __FILE__ . "dataFolder/my_data.db";
+    	return __DIR__ . DIRECTORY_SEPARATOR . "dataFolder" . DIRECTORY_SEPARATOR . "my_data.db";
     }
     
 }
