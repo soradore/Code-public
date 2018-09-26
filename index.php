@@ -110,8 +110,10 @@ $code = $data["code"];
  <select name="type">
     <option value="php">PHP</option>
     <option value="java">JAVA</option>
- </select><div id="info"></div>
- <input type="text" id="title" placeholder="title"><button type="button" id="save">保存</button>
+ </select>
+ <div id="info">
+  <input type="text" id="title" value="exmple!!"><button type="button" id="save">保存</button>
+ </div>
  <div id="code" style="height: 500px; width: 80%"></div>
  <script type="text/javascript">
     <!--
@@ -149,15 +151,9 @@ $code = $data["code"];
           '"': '&quot;',
           '<': '&lt;',
           '>': '&gt;',
-      }[match]
-  });
-}
-
- function nl2br(str) {
-    str = str.replace(/\r\n/g, "<br />");
-    str = str.replace(/(\n|\r)/g, "<br />");
-    return str;
-}
+            }[match]
+        });
+    }
  </script>
 
  <script type="text/javascript">
