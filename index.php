@@ -3,15 +3,15 @@ require "db.php";
 ?>
 <!DOCTYPE html>
 <html lang="ja">
+<!--
+
+    Version :  1.0.0
+    Author  Soradore   https://twitter.com/soradore_
+    
+    -->
 <head>
     <meta charset="utf-8">
-    <!-- <link type="text/css" rel="stylesheet" href="./syntaxhighlighter/styles/shCore.css" />
-    <link type="text/css" rel="stylesheet" href="./syntaxhighlighter/styles/shThemeDefault.css" />-->
-
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-    <!--<script src="./syntaxhighlighter/scripts/shCore.js"></script>
-    <script type="text/javascript" src="./syntaxhighlighter/scripts/shBrushPhp.js"></script>
-    <script type="text/javascript" src="./syntaxhighlighter/scripts/shBrushJava.js"></script> -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.0/ace.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.0/ext-language_tools.js"></script>
     <style type="text/css">
@@ -38,7 +38,11 @@ $code = $data["code"];
 </head>
 <body>
  <!-- ACE Editor -->
-
+ <select name="font-size">
+    <option value="5"></option>
+    <option value="10">10</option>
+    <option value="15">15</option>
+</select>
  <div id="code" style="height: 500px; width: 80%"><?php echo htmlentities($code); ?></div>
  <script type="text/javascript">
     var editor = ace.edit("code"); 
@@ -49,11 +53,16 @@ $code = $data["code"];
     });
     editor.$blockScrolling = Infinity;
     editor.setTheme("ace/theme/monokai");
-    editor.setFontSize(10);
+    editor.setFontSize(15);
     editor.getSession().setMode("ace/mode/<?=$type?>");
     editor.getSession().setTabSize(4);
  </script>
-
+ <script type="text/javascript">
+     $("[name=font-size]").change(function(){
+        var size = $("[name=font-size]").val();
+        editor.getSession().setFontSize(size);
+    });
+ </script>
  <input type="hidden" id="id" value="<?=$id?>">
  <input type="password" id="pass" placeholder="password">
  <button type="button" id="delete">削除</button>
@@ -139,7 +148,7 @@ $code = $data["code"];
     });
     editor.$blockScrolling = Infinity;
     editor.setTheme("ace/theme/monokai");
-    editor.setFontSize(14);
+    editor.setFontSize(15);
     editor.getSession().setMode("ace/mode/php");
     editor.getSession().setTabSize(4);
  </script>
