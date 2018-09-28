@@ -11,6 +11,7 @@ require "db.php";
     -->
 <head>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.0/ace.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.0/ext-language_tools.js"></script>
@@ -28,7 +29,7 @@ require "db.php";
 $id = $_GET["id"];
 $db = new DB();
 $data = $db->getCode($id);
-if($data == DB::NOT_FOUND) exit("IDが見つかりませんでした");
+if($data == DB::NOT_FOUND) header("Location: https://code.mcbe.site/notfound");
 $type = $db->getType($data["type"]);
 $code = $data["code"];
 
@@ -38,10 +39,12 @@ $code = $data["code"];
 </head>
 <body>
  <!-- ACE Editor -->
+ FontSize: 
  <select name="font-size">
-    <option value="5"></option>
+    <option value="5">5</option>
     <option value="10">10</option>
     <option value="15">15</option>
+    <option value="20">20</option>
 </select>
  <div id="code" style="height: 500px; width: 80%"><?php echo htmlentities($code); ?></div>
  <script type="text/javascript">
@@ -60,7 +63,7 @@ $code = $data["code"];
  <script type="text/javascript">
      $("[name=font-size]").change(function(){
         var size = $("[name=font-size]").val();
-        editor.getSession().setFontSize(size);
+        editor.setFontSize(parseInt(size));
     });
  </script>
  <input type="hidden" id="id" value="<?=$id?>">
