@@ -22,7 +22,7 @@ class DB{
 
     }
 
-    public function saveCode($code = "", $title = "", $type = self::TYPE_PHP){
+    public function saveCode($code = "", $title = "", $type = "php"){
         $pass = self::makePass();
         $id = self::getHash();
         $type = $this->type2int($type);
@@ -114,6 +114,7 @@ class DB{
                 break;
             case 'java':
                 $type = self::TYPE_JAVA;
+                break;
             default:
                 $type = self::TYPE_PHP;
                 break;
