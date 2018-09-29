@@ -140,6 +140,7 @@ $code = $data["code"];
  <div id="input">
   <input type="text" id="title" placeholder="title"><button type="button" id="save">保存</button>
  </div>
+ <p><font color="blue">PHPの場合 &lt;php をつけるとハイライトされ、見やすくなります</font></p>
  <div id="code" style="height: 500px; width: 80%"></div>
  <script type="text/javascript">
     <!--
