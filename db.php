@@ -1,19 +1,20 @@
 <?php 
-
+ini_set('display_errors', 1);
 class DB{
 
     const PASS_IS_FAILD = 10;
     const NOT_FOUND = 11;
     const TYPE_PHP = 12;
     const TYPE_JAVA = 13;
+    const TYPE_YAML = 14;
 
     const FILE_DIR = "./dataFolder/files/";
     
     public function __construct(){
         
         if(!file_exists(__DIR__ . "dataFolder/my_data.db")){
-            @mkdir("./dataFolder", 0705);
-            @mkdir(self::FILE_DIR, 0705);
+            @mkdir("./dataFolder");
+            @mkdir("./dataFolder/files");
             $pdo = new PDO("sqlite:" . self::getDBFullPath());
             $sql = "create table codes(id integer, pass text, title text, type integer)";
             $pdo->query($sql);
@@ -22,7 +23,7 @@ class DB{
 
     }
 
-    public function saveCode($code = "", $title = "", $type = "php"){
+    public function saveCode($code, $title, $type){
         $pass = self::makePass();
         $id = self::getHash();
         $type = $this->type2int($type);
@@ -34,6 +35,7 @@ class DB{
             $stmt->execute([$id, password_hash($pass, PASSWORD_DEFAULT), $title, $type]);
             @file_put_contents(self::FILE_DIR.$id.".txt", $code);
             @chmod(self::FILE_DIR.$id.".txt", 0600);
+            //file_put_contents("log.txt", "[id => " . $id . ", type => " . $type . "]", FILE_APPEND); 
         } catch (PDOException $e) {
             echo $e->getMessage();
             return false;
@@ -65,7 +67,7 @@ class DB{
         if($data = $this->getCode($id)){
             if(password_verify($pass, $data["pass"])){
                 try {
-                    $pdo = new PDO("sqlite:" . getDBFullPath());
+                    $pdo = new PDO("sqlite:" . self::getDBFullPath());
                     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
                     $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
                     $stmt = $pdo->prepare("DELETE FROM codes WHERE id = ?");
@@ -99,9 +101,11 @@ class DB{
             case self::TYPE_JAVA:
                 $type = "java";
                 break;
+            case self::TYPE_YAML:
+                $type = "yaml";
+                break;
             default:
                 $type = "php";
-
         }
         return $type;
     }
@@ -109,11 +113,14 @@ class DB{
 
     public function type2int($type){
         switch ($type) {
-            case 'php':
+            case "php":
                 $type = self::TYPE_PHP;
                 break;
-            case 'java':
+            case "java":
                 $type = self::TYPE_JAVA;
+                break;
+            case "yaml":
+                $type = self::TYPE_YAML;
                 break;
             default:
                 $type = self::TYPE_PHP;

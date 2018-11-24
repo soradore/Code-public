@@ -13,8 +13,8 @@ require "db.php";
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.0/ace.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.0/ext-language_tools.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.1/ace.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.1/ext-language_tools.js"></script>
     <style type="text/css">
       #code {
         margin: 30px 60px;
@@ -29,7 +29,7 @@ require "db.php";
 $id = $_GET["id"];
 $db = new DB();
 $data = $db->getCode($id);
-if($data == DB::NOT_FOUND) header("Location: https://code.mcbe.site/notfound");
+if($data == DB::NOT_FOUND) header("Location: https://code.mcbe.site/notfound/");
 $type = $db->getType($data["type"]);
 $code = $data["code"];
 
@@ -43,9 +43,10 @@ $code = $data["code"];
  <select name="font-size">
     <option value="5">5</option>
     <option value="10">10</option>
-    <option value="15">15</option>
+    <option value="15" selected>15</option>
     <option value="20">20</option>
 </select>
+<a href='https://code.mcbe.site'>サイトトップページへ</a>
  <div id="code" style="height: 500px; width: 80%"><?php echo htmlentities($code); ?></div>
  <script type="text/javascript">
     var editor = ace.edit("code"); 
@@ -105,7 +106,7 @@ $code = $data["code"];
             switch(res){
                 case 'success':
                     alert("削除しました");
-                    //location.replace("http://code.pocketmp.xyz");
+                    window.close();
                     break;
                 case 'pass_faild':
                     alert("パスワードが正しくありません");
@@ -125,8 +126,8 @@ $code = $data["code"];
 
 <head>
     <title>コード共有</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.0/ace.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.0/ext-language_tools.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.1/ace.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.1/ext-language_tools.js"></script>
 </head>
 <body>
  
@@ -135,12 +136,13 @@ $code = $data["code"];
  <select name="type">
     <option value="php">PHP</option>
     <option value="java">JAVA</option>
+    <option value="yaml">YAML</option>
  </select>
  <div id="info"></div>
  <div id="input">
-  <input type="text" id="title" placeholder="title"><button type="button" id="save">保存</button>
+  <input type="text" id="title" value="title"><button type="button" id="save">保存</button>
  </div>
- <p><font color="blue">PHPの場合 &lt;php をつけるとハイライトされ、見やすくなります</font></p>
+ <p>* <font color="darkblue">PHPの場合 </font><font color="red">&lt;?php </font><font color="darkblue">をつけるとハイライトされ、見やすくなります</font></p>
  <div id="code" style="height: 500px; width: 80%"></div>
  <script type="text/javascript">
     <!--
@@ -191,7 +193,7 @@ $code = $data["code"];
                 var res = JSON.parse(response);
                 var pass = res.pass;
                 var id = res.id;
-                $("#info").html("<p><font color='green'>保存しました</font></p><p><a href=http://localhost:8080/?id=" + id + "> コード </a>password: <input type='text' value=" + pass + " readonly></p>");
+                $("#info").html("<p><font color='green'>保存しました</font></p><p><a href=https://code.mcbe.site/?id=" + id + " target='_blank'> コード </a> (コピーして共有)</p><p>削除用パスワード: <input type='text' value=" + pass + "></p>");
                 $("#input").html("");
                 
             }).fail(function(XMLHttpRequest, textStatus, errorThrown){
