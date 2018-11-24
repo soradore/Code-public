@@ -3,10 +3,11 @@
 supports
  php
  java
+ yaml
 
 # sample
 https://code.mcbe.site
 
 
 # TODO
-supports yaml and JSON
+supports JSON
